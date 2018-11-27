@@ -185,7 +185,13 @@ export class NgUploaderService {
       });
 
       xhr.onreadystatechange = () => {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
+        // ---- done fix:
+        let done = parseInt(XMLHttpRequest.DONE.toString(), 10);
+        if (isNaN(done)) {
+          done = 4;
+        }
+        // ---------------
+        if (xhr.readyState === done) {
           const speedAverage = Math.round(file.size / (new Date().getTime() - progressStartTime) * 1000);
           file.progress = {
             status: UploadStatus.Done,
